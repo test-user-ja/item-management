@@ -40,7 +40,8 @@
                     </div>
 
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">登録</button>
+                        <button type="submit" class="btn btn-primary" name="registor">登録</button>
+                        <button type="submit" class="btn btn-primary" name="return">戻る</button>
                     </div>
                 </form>
             </div>

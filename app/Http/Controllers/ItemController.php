@@ -21,12 +21,24 @@ class ItemController extends Controller
     /**
      * 商品一覧
      */
-    public function index()
+    public function index(Request $request)
     {
         // 商品一覧取得
-        $items = Item::all();
+        // $items = Item::all();
 
-        return view('item.index', compact('items'));
+        // return view('item.index', compact('items'));
+        $keyword = $request->input('keyword');
+        $query = Item::query();
+        if(!empty($keyword)){
+            $query->where('name','LIKE',"%{$keyword}%")
+            ->orWhere('type','LIKE',"%{$keyword}%")
+            ->orWhere('detail','LIKE',"%{$keyword}%");
+        }
+        // $items = Item::sortable()->get();
+        // $items = $query->get();
+        // $items = $query::sortable()->get();
+        $items = $query->sortable()->get();
+        return view('item.index', compact('items', 'keyword'));
     }
 
     /**
@@ -34,24 +46,58 @@ class ItemController extends Controller
      */
     public function add(Request $request)
     {
-        // POSTリクエストのとき
-        if ($request->isMethod('post')) {
-            // バリデーション
-            $this->validate($request, [
-                'name' => 'required|max:100',
-            ]);
 
-            // 商品登録
-            Item::create([
-                'user_id' => Auth::user()->id,
-                'name' => $request->name,
-                'type' => $request->type,
-                'detail' => $request->detail,
-            ]);
+            // POSTリクエストのとき
+            if ($request->isMethod('post')) {
+                if ($request->has('registor')) {
 
-            return redirect('/items');
+                // バリデーション
+                $this->validate($request, [
+                    'name' => 'required|max:100',
+                ]);
+
+                // 商品登録
+                Item::create([
+                    'user_id' => Auth::user()->id,
+                    'name' => $request->name,
+                    'type' => $request->type,
+                    'detail' => $request->detail,
+                ]);
+
+                return redirect('/items');
+            }else if($request->has('return')) {
+                return redirect('items');
+            }
+    
+            }
+
+            return view('item.add');
+    }
+
+    public function edit($user_id)
+    {
+        $members = Item::find($user_id);
+        // return view('item.edit', compact('user_id'));
+        return view('item.edit', compact('members'));
+    }
+
+    public function update(Request $request, $user_id)
+    {
+        if ($request->has('submit_del')) {
+
+            $members = Item::find($user_id);
+            $members->delete();
+            return redirect('items');
+        } else if ($request->has('submit_return')) {
+            return redirect('items');
         }
-
-        return view('item.add');
+        $members = Item::find($user_id);
+        $validatedData = $request->validate([
+            'name' => 'required|max:100',
+            'type' => 'max:100',
+            'detail' => 'max:500',
+        ]);
+        $members->update($validatedData);
+        return redirect('items');
     }
 }
