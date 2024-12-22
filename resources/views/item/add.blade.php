@@ -7,6 +7,7 @@
 @stop
 
 @section('content')
+@if($role)
     <div class="row">
         <div class="col-md-10">
             @if ($errors->any())
@@ -47,6 +48,9 @@
             </div>
         </div>
     </div>
+    @else
+    <p>権限がありません。</p>
+    @endif
 @stop
 
 @section('css')

@@ -20,9 +20,11 @@
                                 <input type="submit" value="検索" class="btn btn-default">
                             </form>
                         </div>
+                        @if($role)
                         <div class="input-group-append">
                             <a href="{{ url('items/add') }}" class="btn btn-default">商品登録</a>
                         </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -34,7 +36,7 @@
                             <th>@sortablelink('name','名前')</th>
                             <th>@sortablelink('type','種別')</th>
                             <th>@sortablelink('detail','詳細')</th>
-                            <th>編集</th>
+                            <th>操作</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -44,7 +46,9 @@
                             <td>{{ $item->name }}</td>
                             <td>{{ $item->type }}</td>
                             <td>{{ $item->detail }}</td>
+                            @if($role)
                             <td><a href="items/edit/{{ $item->id }}">>> 編集</a></td>
+                            @endif
                         </tr>
                         @endforeach
                     </tbody>

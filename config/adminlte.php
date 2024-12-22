@@ -299,6 +299,7 @@ return [
             'text' => '商品登録',
             'url'  => 'items/add',
             'icon' => 'fas fa-gamepad',
+            'can' => 'admin',
         ],
         // AdminLTEデフォルト
         /*

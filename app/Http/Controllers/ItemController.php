@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
+use App\Models\User;
 
 class ItemController extends Controller
 {
@@ -38,7 +39,10 @@ class ItemController extends Controller
         // $items = $query->get();
         // $items = $query::sortable()->get();
         $items = $query->sortable()->get();
-        return view('item.index', compact('items', 'keyword'));
+        // $id = Auth::id();
+        // $users = User::where('id', $id)->get('admin');
+        $role = auth()->user()->admin;
+        return view('item.index', compact('items', 'keyword', 'role'));
     }
 
     /**
@@ -70,15 +74,18 @@ class ItemController extends Controller
             }
     
             }
-
-            return view('item.add');
+            $role = auth()->user()->admin;
+    
+            return view('item.add', compact('role'));
     }
 
     public function edit($user_id)
     {
         $members = Item::find($user_id);
         // return view('item.edit', compact('user_id'));
-        return view('item.edit', compact('members'));
+        $role = auth()->user()->admin;
+
+        return view('item.edit', compact('members', 'role'));
     }
 
     public function update(Request $request, $user_id)
