@@ -62,5 +62,5 @@ Laravel 10.13.5
 ```
 
 ## 設計書
-[設計書ページへ](test)
+[設計書ページへ](https://drive.google.com/drive/folders/1qC0OFIhkRR7u_Mq5oDY0ug5UtCBHM337?usp=drive_link)
 
